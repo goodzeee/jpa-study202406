@@ -2,7 +2,6 @@ package com.spring.jpastudy.chap01.repository;
 
 
 // my batis : mapper 역할하는 레퍼지토리 클래스
-
 import com.spring.jpastudy.chap01.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
