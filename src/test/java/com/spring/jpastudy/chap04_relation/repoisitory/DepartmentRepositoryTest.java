@@ -40,6 +40,43 @@ class DepartmentRepositoryTest {
         System.out.println("employees = " + employees);
     }
 
+    // 양방향 연관관계에서 리스트에 데이터 갱신시 주의사항
+    @Test
+    @DisplayName("양반향 연관관계에서 연관 데이터 수정")
+    void changeTest() {
+        //given
+        // 3번 사원의 부서를 2번 부서에서 1번 부서로 수정
+
+        // 3번 사원 정보 조회
+        Employee employee = employeeRepository.findById(3L).orElseThrow();
+        // 1번 부서 정보 조회
+        Department department = departmentRepository.findById(2L).orElseThrow();
+
+        //when
+        /*
+            ❌사원정보가 Employee 엔터티에서 수정되어도
+            반대편 엔터티인 Department 에서는 리스트에 바로 반영되지 않는다.
+
+            📌해결방안 : 데이터 수정시에 반대편 엔터티에도 같이 수정 해줘라 !
+         */
+        // 사원정보 수정 -> save 저장
+//        employee.setDepartment(department);
+//        //⭐⭐ 핵심 : 양방향에선 반대편 부서에도 수정된 사원정보 추가해주기
+//        department.getEmployees().add(employee);
+
+        employee.changeDepartment(department);
+
+        employeeRepository.save(employee);
+
+        //then
+        // 수정하여 바뀐부서의 사원목록 조회
+        List<Employee> employees = department.getEmployees();
+        System.out.println("\n\n\n");
+        employees.forEach(System.out::println);
+        System.out.println("\n\n\n");
+
+    }
+
 
 
 }
