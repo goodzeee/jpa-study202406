@@ -32,4 +32,8 @@ public class Employee {  // employee 가 N다 !
     @JoinColumn(name = "dept_id")   // FK 컬럼명
     private Department department;   // department 는 1 !
 
+    public void changeDepartment(Department department) {
+        this.department = department;
+        department.getEmployees().add(this);  // 반대편 부서에도 추가해주기 !
+    }
 }
