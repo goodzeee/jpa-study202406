@@ -77,6 +77,9 @@ class EmployeeRepositoryTest {
         //then
         System.out.println("\n\n\n");
         System.out.println("employee = " + employee);
+
+        Department department = employee.getDepartment();
+        System.out.println("department = " + department);
     }
 
 }
