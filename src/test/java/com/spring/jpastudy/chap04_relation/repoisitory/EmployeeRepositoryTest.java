@@ -78,6 +78,7 @@ class EmployeeRepositoryTest {
         System.out.println("\n\n\n");
         System.out.println("employee = " + employee);
 
+        // LAZY 로딩으로 해놔서 .getDepartment 호출해 부서 정보 보기 !
         Department department = employee.getDepartment();
         System.out.println("department = " + department);
     }
