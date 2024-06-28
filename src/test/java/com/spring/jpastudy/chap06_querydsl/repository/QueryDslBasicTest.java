@@ -3,18 +3,14 @@ package com.spring.jpastudy.chap06_querydsl.repository;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.spring.jpastudy.chap06_querydsl.entity.Group;
 import com.spring.jpastudy.chap06_querydsl.entity.Idol;
-import com.spring.jpastudy.chap06_querydsl.entity.QGroup;
-import com.spring.jpastudy.chap06_querydsl.entity.QIdol;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Table;
 
 import java.util.List;
 import java.util.Optional;
