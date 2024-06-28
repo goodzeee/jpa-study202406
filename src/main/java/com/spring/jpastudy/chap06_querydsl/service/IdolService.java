@@ -7,12 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.spring.jpastudy.chap06_querydsl.entity.QIdol.idol;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +31,7 @@ public class IdolService {
 //        return idolList1;
 
         // ⭐3번째 방법 -> IdolRepositoryCustomImpl 에 내가 사용할 메소드 커스텀 해서 사용하기 !
-        List<Idol> byGroupName = idolRepository.findByGroupName();
+        List<Idol> byGroupName = idolRepository.foundByGroupName();
         return byGroupName;
     }
 }
