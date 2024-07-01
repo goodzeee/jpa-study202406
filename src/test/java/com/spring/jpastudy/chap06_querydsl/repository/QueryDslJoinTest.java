@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static com.spring.jpastudy.chap06_querydsl.entity.QAlbum.album;
 import static com.spring.jpastudy.chap06_querydsl.entity.QGroup.group;
 import static com.spring.jpastudy.chap06_querydsl.entity.QIdol.idol;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -128,15 +129,69 @@ class QueryDslJoinTest {
                 .leftJoin(idol.group, group)  // 아이돌에 있는 groupId와 그룹에 있는 groupId 조인 조건 !!
                 .fetch();
         //then
-        assertFalse(result.isEmpty());
-        for (Tuple tuple : result) {
-            Idol i = tuple.get(idol);
-            Group g = tuple.get(group);
-
-            System.out.println("\nIdol: " + i.getIdolName() + ", Group: " + (g != null ? g.getGroupName() : "솔로가수"));
-        }
+        System.out.println("\n\n");
+        result.forEach(System.out::println);
     }
 
+    @Test
+    @DisplayName("아이브 그룹에 속한 아이돌의 이름과 그룹명 조회")
+    void iveGroupTest() {
+        //given
+        String groupName = "아이브";
+        //when
+        List<Tuple> result = factory
+                .select(idol.idolName, idol.group.groupName)
+                .from(idol)
+                .innerJoin(idol.group, group)
+                .where(group.groupName.eq(groupName))
+                .fetch();
+        //then
+        System.out.println("\n\n");
+        result.forEach(System.out::println);
+    }
+
+    @Test
+    @DisplayName("그룹별 평균 나이 계산하여 평균 나이가 22세 이상인 그룹의 그룹명과 평균나이 조회")
+    void avgJoinTest() {
+        //given
+
+        //when
+        List<Tuple> result = factory
+                .select(group.groupName, idol.age.avg())
+                .from(idol)
+                .innerJoin(idol.group, group)
+                .groupBy(group.id)
+                .having(idol.age.avg().goe(22))
+                .fetch();
+        //then
+        System.out.println("\n\n");
+        result.forEach(System.out::println);
+    }
+
+    @Test
+    @DisplayName("2022년에 발매된 앨범이 있는 아이돌의 이름과 그룹명과 앨범명과 발매년도 조회")
+    void albumTest() {
+        //given
+        int year = 2022;
+        //when
+        List<Tuple> result = factory
+                .select(idol, album)
+                .from(idol)
+                .innerJoin(idol.group, group)
+                .innerJoin(group.albums, album)
+                .where(album.releaseYear.eq(year))
+                .fetch();
+        //then
+        assertFalse(result.isEmpty());
+        result.forEach(tuple -> {
+            Idol foundIdol = tuple.get(idol);
+            Album foundAlbum = tuple.get(album);
+            System.out.printf("\n# 아이돌명: %s, 그룹명: %s, " +
+                            "앨범명: %s, 발매연도: %d년\n\n"
+                    ,foundIdol.getIdolName(), foundIdol.getGroup().getGroupName()
+                    , foundAlbum.getAlbumName(), foundAlbum.getReleaseYear());
+        });
+    }
 
 
 
