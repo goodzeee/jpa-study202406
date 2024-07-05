@@ -53,4 +53,14 @@ public class EventController {
         EventOneDto eventOneDto = eventService.getEventDetail(eventId);
         return ResponseEntity.ok().body(eventOneDto);
     }
+
+    // 이벤트 삭제 요청
+    @DeleteMapping("/{eventId}")
+    public ResponseEntity<?> deleteEvent(@PathVariable Long eventId) {
+
+        eventService.deleteEvent(eventId);
+
+        return ResponseEntity.ok().body("event deleted !");
+    }
+
 }
