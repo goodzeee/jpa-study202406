@@ -7,6 +7,7 @@ import com.spring.jpastudy.event.entity.Event;
 import com.spring.jpastudy.event.service.EventService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,22 +23,23 @@ public class EventController {
     private final EventService eventService;
 
     // 전체 조회 요청
-    @GetMapping
+    @GetMapping("/page/{pageNo}")
     public ResponseEntity<?> getList(
-            @RequestParam(required = false) String sort) {
+            @RequestParam(required = false) String sort,
+            @PathVariable int pageNo) {
         if (sort == null) {
             return ResponseEntity.badRequest().body("sort 파라미터가 없습니다.");
         }
 
-        List<EventDetailDto> events = eventService.getEvents(sort);
+        List<EventDetailDto> events = eventService.getEvents(pageNo, sort);
         return ResponseEntity.ok().body(events);
     }
 
     // 등록 요청
     @PostMapping
     public ResponseEntity<?> register(@RequestBody EventSaveDto dto) {
-        List<EventDetailDto> events = eventService.saveEvent(dto);
-        return ResponseEntity.ok().body(events);
+        eventService.saveEvent(dto);
+        return ResponseEntity.ok().body("event saved !");
     }
 
     // 단일 조회 요청
@@ -59,8 +61,14 @@ public class EventController {
     public ResponseEntity<?> deleteEvent(@PathVariable Long eventId) {
 
         eventService.deleteEvent(eventId);
-
         return ResponseEntity.ok().body("event deleted !");
     }
 
+    // 이벤트 수정 요청
+    @PatchMapping("/{eventId}")
+    public ResponseEntity<?> modify(@RequestBody EventSaveDto dto, @PathVariable Long eventId) {
+
+        eventService.modifyEvent(dto, eventId);
+        return ResponseEntity.ok().body("event modified !");
+    }
 }

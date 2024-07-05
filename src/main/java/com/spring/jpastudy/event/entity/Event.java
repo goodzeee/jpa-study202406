@@ -1,5 +1,6 @@
 package com.spring.jpastudy.event.entity;
 
+import com.spring.jpastudy.event.dto.request.EventSaveDto;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -38,4 +39,10 @@ public class Event {
     @CreationTimestamp
     private LocalDateTime createdAt; // 이벤트 등록 날짜
 
+    public void changeEvent(EventSaveDto dto) {
+        this.title = dto.getTitle();
+        this.description = dto.getDesc();
+        this.image = dto.getImageUrl();
+        this.date = dto.getBeginDate();
+    }
 }
